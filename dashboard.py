@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 from helper import read_coins_txt, telegram_data_coin, price_data_coin, get_coin_name
 from db import add_coins_db, create_connection, create_table , sql_create_coins_table, sql_create_data_table
-import plotly.express as px
+# import plotly.express as px
 import re
 
 # connect to database
