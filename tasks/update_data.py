@@ -1,5 +1,6 @@
 from scrapers.telegram_scraper import scrape_telegram_data
 from helpers.cmc import get_latest_symbols_data
+from helpers.db import create_connection
 from pathlib import Path
 import datetime
 import time
@@ -13,8 +14,8 @@ import logging
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
     dir_path = Path('coinStats/data/database.db').absolute()
-    # conn = create_connection(dir_path)
-    conn = sqlite3.connect(dir_path)
+    conn = create_connection(dir_path)
+    # conn = sqlite3.connect(dir_path)
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
     cmc_ids = [elem[1] for elem in symbols_data]
