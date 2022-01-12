@@ -3,7 +3,7 @@ from sqlite3 import Error
 import logging
 from helpers.cmc import get_symbol_cmc_data, get_latest_symbols_data
 from scrapers.telegram_scraper import scrape_telegram_data
-from tasks.update_data import update_symbols_data, log
+from update_data import update_symbols_data, log
 from pathlib import Path
 import time
 import random
