@@ -30,10 +30,10 @@ def create_table(conn, create_table_sql):
 
 def startup_db():
     """ Connect (or create) database """
-    dir_path = Path('coinStats/data/database.db').absolute()
-    conn = create_connection(dir_path)
+    # dir_path = Path('coinStats/data/database.db').absolute()
+    # conn = create_connection(dir_path)
     #local
-    # conn = create_connection('data/database.db')
+    conn = create_connection('data/database.db')
     if conn is not None:
         # create tables
         create_table(conn, sql_create_symbols_table)
@@ -43,6 +43,7 @@ def startup_db():
     return conn
 
 def add_symbols_db(conn, symbols):
+    """ Add all symbols to the database for the first time"""
     cur = conn.cursor()
     for symbol in symbols:
         exists = cur.execute(f"SELECT * FROM symbols WHERE symbol = \"{symbol}\"").fetchall()
@@ -59,6 +60,7 @@ def add_symbols_db(conn, symbols):
     cur.close()
 
 def fill_db(conn):
+    """ Function to fill the new database for the first time """
     cur = conn.cursor()
     db_contains_data = cur.execute("SELECT * FROM data").fetchone()
     if not db_contains_data:
