@@ -12,7 +12,7 @@ from sqlite3 import Error
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
     # log("start")
-    dir_path = Path('data/database.db').absolute()
+    dir_path = Path('/root/coinStats/data/database.db').absolute()
     conn = sqlite3.connect(dir_path)
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
