@@ -1,4 +1,4 @@
-from telegram_scraper import telegram_scraper
+from telegram_scraper import scrape_telegram_data
 from cmc import get_latest_symbols_data
 from pathlib import Path
 import datetime
@@ -37,7 +37,7 @@ def update_symbols_data():
             mcap = latest_cmc_data[cmc_id]['mcap']
             percent_change_1h = latest_cmc_data[cmc_id]['percent_change_1h']
             cmc_rank = latest_cmc_data[cmc_id]['cmc_rank']
-            telegram_members, telegram_members_online = telegram_scraper(telegram_url)
+            telegram_members, telegram_members_online = scrape_telegram_data(telegram_url)
             
             # push to database
             cur.execute("INSERT INTO data(coin_id, date, telegram_members, telegram_members_online, marketcap, price,\

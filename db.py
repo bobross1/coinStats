@@ -1,8 +1,10 @@
 import sqlite3
 from sqlite3 import Error
 import logging
-from cmc import get_symbol_cmc_data
+from cmc import get_symbol_cmc_data, get_latest_symbols_data
+from telegram_scraper import scrape_telegram_data
 from update_data import update_symbols_data
+from pathlib import Path
 
 def create_connection(db_file):
     """ Connect (or create) database """
@@ -25,7 +27,10 @@ def create_table(conn, create_table_sql):
 
 def startup_db():
     """ Connect (or create) database """
-    conn = create_connection('data/database.db')
+    dir_path = Path('coinStats/data/database.db').absolute()
+    conn = create_connection(dir_path)
+    #local
+    # conn = create_connection('data/database.db')
     if conn is not None:
         # create tables
         create_table(conn, sql_create_symbols_table)

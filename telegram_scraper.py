@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-def telegram_scraper(url):
+def scrape_telegram_data(url):
     """Function retrieves members and currently online members data of telegram channel.
     
     Parameters
