@@ -1,4 +1,4 @@
-from telegram_scraper import scrape_telegram_data
+from scrapers.telegram_scraper import scrape_telegram_data
 from helpers.cmc import get_latest_symbols_data
 from pathlib import Path
 import datetime
