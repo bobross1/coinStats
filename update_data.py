@@ -1,6 +1,5 @@
-# from dbtje import create_connection2
-from scrapers.telegram_scraper import telegram_scraper
-from helpers.cmc import get_latest_symbols_data
+from telegram_scraper import telegram_scraper
+from cmc import get_latest_symbols_data
 from pathlib import Path
 import datetime
 import time
@@ -14,17 +13,20 @@ import logging
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
     # productie
-    dir_path = Path('coinStats/data/database.db').absolute()
-    try:
-        conn = sqlite3.connect(dir_path)
-    except Error as e:
-        logging.error(e, exc_info=True)
+    # dir_path = Path('coinStats/data/database.db').absolute()
+    # try:
+    #     conn = sqlite3.connect(dir_path)
+    # except Error as e:
+    #     logging.error(e, exc_info=True)
+    
     # local
     # try:
     #     conn = sqlite3.connect('data/database.db')
     # except Error as e:
     #     logging.error(e, exc_info=True)
-
+    dir_path = Path('coinStats/data/database.db').absolute()
+    # conn = create_connection(dir_path)
+    conn = sqlite3.connect(dir_path)
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
     cmc_ids = [elem[1] for elem in symbols_data]
