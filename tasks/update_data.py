@@ -37,7 +37,7 @@ def update_symbols_data():
         cur.close()
         log("Succes")
     except Exception as e:
-        print(e)
+        log(e)
 
 def log(message):
     """ Logger for cronjobs. """
@@ -51,7 +51,4 @@ def log(message):
     log.close()
 
 if __name__ == '__main__':
-    try:
-        update_symbols_data()
-    except Exception as e:
-        log(e)
+    update_symbols_data()
