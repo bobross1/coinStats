@@ -1,6 +1,5 @@
 from scrapers.telegram_scraper import scrape_telegram_data
 from helpers.cmc import get_latest_symbols_data
-from helpers.db import create_connection
 from pathlib import Path
 import datetime
 import time
