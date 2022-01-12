@@ -4,26 +4,18 @@ from db import add_symbols_db, startup_db, fill_db, create_table, sql_create_dat
 from pathlib import Path
 
 # Connect/create to database
-# conn = startup_db()
+conn = startup_db()
 
 # dir_path = Path('coinStats/data/database.db').absolute()
 # conn = create_connection(dir_path)
 #local
-conn = create_connection('data/database.db')
+# conn = create_connection('data/database.db')
 if conn is not None:
     # create tables
     create_table(conn, sql_create_symbols_table)
     create_table(conn, sql_create_data_table)
 else:
     print('Something wrong with database')
-
-if conn is not None:
-    # create tables
-    create_table(conn, sql_create_symbols_table)
-    create_table(conn, sql_create_data_table)
-else:
-    print('Something wrong with database')
-
 
 # Page settings
 st.set_page_config(page_title="coinStats",
