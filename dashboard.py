@@ -47,11 +47,11 @@ R1C1.metric("Ranking", f"# {cmc_rank}", "")
 R1C2.metric("Marketcap", f"${round(marketcap,2)}", "")
 R1C3.metric("Price", f"${round(price,2)}", f"{round(percent_change_1h,2)}% (1h)")
     
-R2C1, R2C2 = st.columns(2)
-with R2C1:
-    st.text("Total telegram members")
-    st.line_chart(telegram_members)
+# R2C1, R2C2 = st.columns(2)
+# with R2C1:
+st.text("Total telegram members")
+st.line_chart(telegram_members)
 
-with R2C2:
-    st.text("Telegram members online")
-    st.line_chart(telegram_members_online)
+# with R2C2:
+st.text("Telegram members online")
+st.line_chart(telegram_members_online)
