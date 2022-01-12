@@ -11,7 +11,6 @@ from sqlite3 import Error
 
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
-    # log("start")
     dir_path = Path('/root/coinStats/data/database.db').absolute()
     conn = sqlite3.connect(dir_path)
     cur = conn.cursor()
@@ -35,9 +34,9 @@ def update_symbols_data():
             conn.commit()
         
         cur.close()
-        # log("Succes")
+        log("Succes")
     except Exception as e:
-        print(e)
+        log(e)
 
 def log(message):
     """ Logger for cronjobs. """
