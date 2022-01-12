@@ -7,11 +7,11 @@ import random
 import os
 import sqlite3
 from sqlite3 import Error
-import logging
 
 
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
+    log("start")
     dir_path = Path('coinStats/data/database.db').absolute()
     conn = sqlite3.connect(dir_path)
     cur = conn.cursor()
