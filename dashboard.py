@@ -1,5 +1,5 @@
 import streamlit as st
-from helper import read_symbols_txt, telegram_data_symbol, price_data_symbol, get_coin_name
+from helpers.helper import read_symbols_txt, telegram_data_symbol, price_data_symbol, get_coin_name
 from helpers.db import add_symbols_db, startup_db, fill_db, create_table, sql_create_data_table, sql_create_symbols_table, create_connection
 from pathlib import Path
 
