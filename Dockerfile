@@ -2,6 +2,7 @@ FROM continuumio/miniconda3
 COPY . /app
 WORKDIR /app
 RUN conda create -n env python
+RUN conda init bash
 ENV PATH /opt/conda/envs/env/bin:$PATH
 RUN conda activate env
 RUN conda config --env --add channels conda-forge
