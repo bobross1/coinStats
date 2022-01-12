@@ -2,30 +2,29 @@ import pandas as pd
 import logging
 from sqlite3 import Error
 
-def read_coins_txt():
-    with open('coins.txt', 'r') as f:
+def read_symbols_txt():
+    with open('symbols.txt', 'r') as f:
         lines = f.readlines()
-        coins = lines[0].strip().replace(" ", "").split(",")
+        symbols = set(lines[0].strip().replace(" ", "").split(","))
     f.close()
-    #TODO: make list unique
-    return coins
+    return list(symbols)
 
 def get_coin_name(conn, symbol):
     cur = conn.cursor()
-    cur.execute(f"SELECT name FROM coins WHERE symbol=\"{symbol}\";")
+    cur.execute(f"SELECT name FROM symbols WHERE symbol=\"{symbol}\";")
     return cur.fetchone()[0]
 
-def telegram_data_coin(conn, coin):
-    """ select all telegram members data from coin and return in a dataframe
+def telegram_data_symbol(conn, symbol):
+    """ Query all telegram members data from symbol and return it in a dataframe
     :param conn: Connection object
-    :param coin: Coin name 
+    :param symbol: Coin symbol
     :returns: dataframe with date as index and data
     """
     try:
         cur = conn.cursor()
-        cur.execute(f"SELECT id FROM coins WHERE symbol=\"{coin}\";")
+        cur.execute(f"SELECT id FROM symbols WHERE symbol=\"{symbol}\";")
         coin_id = cur.fetchone()[0]
-        query = f"SELECT * FROM data WHERE coin_id=\"{coin_id}\";"
+        query = f"SELECT * FROM data WHERE coin_id=\"{coin_id}\" ORDER BY id DESC LIMIT 50;"
         cur.execute(query)
         rows = cur.fetchall()
         df_membercount = pd.DataFrame({'index': [x[2] for x in rows], 
@@ -37,17 +36,18 @@ def telegram_data_coin(conn, coin):
     except Error as e:
         logging.error(e, exc_info=True)
 
-def price_data_coin(conn, coin):
-    """ select all telegram members data from coin and return in a dataframe
+def price_data_symbol(conn, symbol):
+    """ Query all price data from symbol and return it in a dataframe
     :param conn: Connection object
-    :param coin: Coin name 
+    :param symbol: Coin symbol 
     :returns: dataframe with date as index and data
     """
     try:
         cur = conn.cursor()
-        cur.execute(f"SELECT id FROM coins WHERE symbol=\"{coin}\";")
+        cur.execute(f"SELECT id FROM symbols WHERE symbol=\"{symbol}\";")
         coin_id = cur.fetchone()[0]
-        query = f"SELECT marketcap, price, cmcrank, percent_change_1h FROM data WHERE coin_id=\"{coin_id}\";"
+        query = f"SELECT marketcap, price, cmcrank, percent_change_1h FROM data\
+                  WHERE coin_id=\"{coin_id}\" ORDER BY id DESC;"
         results = cur.execute(query).fetchone()
         marketcap, price, cmc_rank, percent_change_1h = results[0], results[1], results[2], results[3]
         return price, marketcap, cmc_rank, percent_change_1h

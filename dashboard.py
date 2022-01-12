@@ -1,49 +1,47 @@
 import streamlit as st
-import sqlite3
-from helper import read_coins_txt, telegram_data_coin, price_data_coin, get_coin_name
-from db import add_coins_db, create_connection, create_table , sql_create_coins_table, sql_create_data_table
-# import plotly.express as px
-import re
+from helpers.helper import read_symbols_txt, telegram_data_symbol, price_data_symbol, get_coin_name
+from helpers.db import add_symbols_db, startup_db, fill_db, create_table, sql_create_data_table, sql_create_symbols_table
 
-# connect to database
-conn = create_connection('data/database.db')
+# Connect/create to database
+conn = startup_db()
+
 if conn is not None:
-    # create coins table
-    create_table(conn, sql_create_coins_table)
+    # create tables
+    create_table(conn, sql_create_symbols_table)
     create_table(conn, sql_create_data_table)
-    
-    # fill first time
-    #-----
 else:
     print('Something wrong with database')
 
+
+# Page settings
 st.set_page_config(page_title="coinStats",
                     page_icon="📈",
                     layout="wide",
                     initial_sidebar_state="expanded")
 
-# sidebar
+# Sidebar
 st.sidebar.header("Menu")
-symbols = read_coins_txt()
+symbols = read_symbols_txt()
 
-# add coins to db (if not already in there)
+# Add coins to db (if not already in there)
 if symbols == None:
     st.info("Add symbol(s) to the coins.txt file.")
 else:
-    add_coins_db(conn, symbols)
+    # Fill db first time
+    add_symbols_db(conn, symbols)
+    fill_db(conn)
     
+symbol = st.sidebar.selectbox("Select coin:", symbols)
+coin_name = get_coin_name(conn, symbol)
 
-coin = st.sidebar.selectbox("Select coin:", symbols)
-coin_name = get_coin_name(conn, coin)
+# Main page
+st.title(f'{coin_name} ({symbol})')
 
-# main page
-st.title(f'{coin_name} ({coin})')
+# Retrieve all data related to selected symbol
+telegram_members, telegram_members_online = telegram_data_symbol(conn, symbol)
+price, marketcap, cmc_rank, percent_change_1h = price_data_symbol(conn, symbol)
 
-#load all data related to symbol
-telegram_members, telegram_members_online = telegram_data_coin(conn, coin)
-price, marketcap, cmc_rank, percent_change_1h = price_data_coin(conn, coin)
-
-
+# Show data
 R1C1, R1C2, R1C3 = st.columns(3)
 R1C1.metric("Ranking", f"# {cmc_rank}", "")
 R1C2.metric("Marketcap", f"${round(marketcap,2)}", "")

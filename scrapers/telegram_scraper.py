@@ -3,7 +3,7 @@ import re
 from bs4 import BeautifulSoup
 
 def telegram_scraper(url):
-    """Function retrieves members and online members data of telegram channel.
+    """Function retrieves members and currently online members data of telegram channel.
     
     Parameters
     ----------
