@@ -41,7 +41,7 @@ def update_symbols_data():
 
 def log(message):
     """ Logger for cronjobs. """
-    dir_path = Path('coinStats/tasks/update_data.py').parent.absolute()
+    dir_path = Path('coinStats/update_data.py').parent.absolute()
     full_path = os.path.join(dir_path / "scraper_log.txt")
     log = open(full_path, "a")
     log.write("\n")
