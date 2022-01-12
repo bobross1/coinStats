@@ -1,15 +1,11 @@
 import streamlit as st
 from helper import read_symbols_txt, telegram_data_symbol, price_data_symbol, get_coin_name
-from db import add_symbols_db, startup_db, fill_db, create_table, sql_create_data_table, sql_create_symbols_table, create_connection
+from helpers.db import add_symbols_db, startup_db, fill_db, create_table, sql_create_data_table, sql_create_symbols_table, create_connection
 from pathlib import Path
 
 # Connect/create to database
 conn = startup_db()
 
-# dir_path = Path('coinStats/data/database.db').absolute()
-# conn = create_connection(dir_path)
-#local
-# conn = create_connection('data/database.db')
 if conn is not None:
     # create tables
     create_table(conn, sql_create_symbols_table)
