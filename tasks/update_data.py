@@ -14,17 +14,17 @@ import logging
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
     # productie
-    # dir_path = Path('coinStats/data/database.db').absolute()
-    # try:
-    #     conn = sqlite3.connect(dir_path)
-    # except Error as e:
-    #     logging.error(e, exc_info=True)
+    dir_path = Path('coinStats/data/database.db').absolute()
+    try:
+        conn = sqlite3.connect(dir_path)
+    except Error as e:
+        logging.error(e, exc_info=True)
 
     # local
-    try:
-        conn = sqlite3.connect('data/database.db')
-    except Error as e:
-        logging.error(e, exc_info=True) 
+    # try:
+    #     conn = sqlite3.connect('data/database.db')
+    # except Error as e:
+    #     logging.error(e, exc_info=True) 
     
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
