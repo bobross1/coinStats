@@ -30,9 +30,6 @@ def create_table(conn, create_table_sql):
 
 def startup_db():
     """ Connect (or create) database """
-    # dir_path = Path('coinStats/data/database.db').absolute()
-    # conn = create_connection(dir_path)
-    #local
     conn = create_connection('data/database.db')
     if conn is not None:
         # create tables
