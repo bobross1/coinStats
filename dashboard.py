@@ -23,7 +23,7 @@ st.set_page_config(page_title="coinStats",
                     initial_sidebar_state="expanded")
 
 # sidebar
-st.sidebar.header("Menu2")
+st.sidebar.header("Menu")
 symbols = read_coins_txt()
 
 # add coins to db (if not already in there)

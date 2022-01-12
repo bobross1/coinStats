@@ -6,11 +6,12 @@ from pathlib import Path
 import datetime
 import time
 import random
+import os
 
 def update_symbols_data():
-#     dir_path = Path('coinStats/data/database.db').absolute()
-#     print(dir_path)
-    conn = create_connection('data/database.db')
+    dir_path = Path('coinStats/data/database.db').absolute()
+    conn = create_connection(dir_path) # productie
+    # conn = create_connection('data/database.db') # local
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM coins").fetchall()
     cmc_ids = [elem[1] for elem in symbols_data]
@@ -33,6 +34,18 @@ def update_symbols_data():
         cur.close()
     except Exception as e:
         print(e)
+
+def log(message):
+    dir_path = Path('coinStats/update_data.py').parent.absolute()
+    full_path = os.path.join(dir_path / "scraper_log.txt")
+    log = open(full_path, "a")
+    # tz = pytz.timezone('Europe/Amsterdam')
+    # amsterdam_now = datetime.datetime.now(tz)
+    log.write("\n")
+    log.write(datetime.datetime.now().strftime("%D %H:%M"))
+    log.write(" ")
+    log.write(message)
+    log.close()
 
 if __name__ == '__main__':
     update_symbols_data()
