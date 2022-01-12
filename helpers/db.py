@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import logging
 from helpers.cmc import get_symbol_cmc_data
-from tasks.update_data import update_symbols_data
+from update_data import update_symbols_data
 
 def create_connection(db_file):
     """ Connect (or create) database """
