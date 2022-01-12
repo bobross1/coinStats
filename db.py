@@ -3,8 +3,11 @@ from sqlite3 import Error
 import logging
 from cmc import get_symbol_cmc_data, get_latest_symbols_data
 from telegram_scraper import scrape_telegram_data
-from update_data import update_symbols_data
+from update_data import update_symbols_data, log
 from pathlib import Path
+import time
+import random
+import datetime
 
 def create_connection(db_file):
     """ Connect (or create) database """
@@ -59,7 +62,28 @@ def fill_db(conn):
     cur = conn.cursor()
     db_contains_data = cur.execute("SELECT * FROM data").fetchone()
     if not db_contains_data:
-        update_symbols_data()
+        # update all symbols first time
+        symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
+        cmc_ids = [elem[1] for elem in symbols_data]
+        latest_cmc_data = get_latest_symbols_data(cmc_ids)
+        try:
+            for id, cmc_id, telegram_url in symbols_data:
+                price = latest_cmc_data[cmc_id]['price']
+                mcap = latest_cmc_data[cmc_id]['mcap']
+                percent_change_1h = latest_cmc_data[cmc_id]['percent_change_1h']
+                cmc_rank = latest_cmc_data[cmc_id]['cmc_rank']
+                telegram_members, telegram_members_online = scrape_telegram_data(telegram_url)
+                
+                # push to database
+                cur.execute("INSERT INTO data(coin_id, date, telegram_members, telegram_members_online, marketcap, price,\
+                                        cmcrank, percent_change_1h) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",\
+                                        (id, datetime.datetime.now().strftime("%D %H:%M"),
+                                        telegram_members, telegram_members_online, mcap, price, cmc_rank, percent_change_1h))
+                time.sleep(random.randrange(0,2))
+                conn.commit()
+            cur.close()
+        except Exception as e:
+            print(e)
 
 # Queries for creating the database tables
 sql_create_symbols_table = """CREATE TABLE IF NOT EXISTS symbols (
