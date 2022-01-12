@@ -1,5 +1,6 @@
 from scrapers.telegram_scraper import scrape_telegram_data
 from helpers.cmc import get_latest_symbols_data
+from helpers.db import sql_create_data_table, sql_create_symbols_table, create_table
 from pathlib import Path
 import datetime
 import time
@@ -11,8 +12,20 @@ from sqlite3 import Error
 
 def update_symbols_data():
     """ Retrieve and push new data to the database. """
-    dir_path = Path('/root/coinStats/data/database.db').absolute()
-    conn = sqlite3.connect(dir_path)
+    # local
+    # dir_path = Path('coinStats/data/database.db').absolute()
+    conn = sqlite3.connect('data/database.db')
+    if conn is not None:
+        # create tables
+        create_table(conn, sql_create_symbols_table)
+        create_table(conn, sql_create_data_table)
+    else:
+        print('Something wrong with database')
+
+    # prod
+    # dir_path = Path('/root/coinStats/data/database.db').absolute()
+    # conn = sqlite3.connect(dir_path)
+    
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
     cmc_ids = [elem[1] for elem in symbols_data]
@@ -34,9 +47,10 @@ def update_symbols_data():
             conn.commit()
         
         cur.close()
-        log("Succes")
+#        log("Succes")
     except Exception as e:
-        log(e)
+        print(e)
+#       log(e)
 
 def log(message):
     """ Logger for cronjobs. """

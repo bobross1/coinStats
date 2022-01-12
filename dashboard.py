@@ -6,12 +6,12 @@ from pathlib import Path
 # Connect/create to database
 conn = startup_db()
 
-if conn is not None:
-    # create tables
-    create_table(conn, sql_create_symbols_table)
-    create_table(conn, sql_create_data_table)
-else:
-    print('Something wrong with database')
+# if conn is not None:
+#     # create tables
+#     create_table(conn, sql_create_symbols_table)
+#     create_table(conn, sql_create_data_table)
+# else:
+#     print('Something wrong with database')
 
 # Page settings
 st.set_page_config(page_title="coinStats",
