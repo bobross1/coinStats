@@ -32,6 +32,7 @@ def update_symbols_data():
             conn.commit()
         
         cur.close()
+        log("Succes")
     except Exception as e:
         print(e)
 
@@ -39,8 +40,6 @@ def log(message):
     dir_path = Path('coinStats/update_data.py').parent.absolute()
     full_path = os.path.join(dir_path / "scraper_log.txt")
     log = open(full_path, "a")
-    # tz = pytz.timezone('Europe/Amsterdam')
-    # amsterdam_now = datetime.datetime.now(tz)
     log.write("\n")
     log.write(datetime.datetime.now().strftime("%D %H:%M"))
     log.write(" ")
@@ -48,4 +47,7 @@ def log(message):
     log.close()
 
 if __name__ == '__main__':
-    update_symbols_data()
+    try:
+        update_symbols_data()
+    except Exception as e:
+        log(e)
