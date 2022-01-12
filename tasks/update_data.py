@@ -19,13 +19,12 @@ def update_symbols_data():
         conn = sqlite3.connect(dir_path)
     except Error as e:
         logging.error(e, exc_info=True)
-
     # local
     # try:
     #     conn = sqlite3.connect('data/database.db')
     # except Error as e:
-    #     logging.error(e, exc_info=True) 
-    
+    #     logging.error(e, exc_info=True)
+
     cur = conn.cursor()
     symbols_data = cur.execute("SELECT id, cmc_id, telegram_url FROM symbols").fetchall()
     cmc_ids = [elem[1] for elem in symbols_data]
