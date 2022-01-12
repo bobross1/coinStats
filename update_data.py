@@ -17,10 +17,10 @@ def update_symbols_data():
     latest_cmc_data = get_latest_coin_data(cmc_ids)
     try:
         for id, cmc_id, telegram_url in symbols_data:
-            price = latest_cmc_data[str(cmc_id)]['price']
-            mcap = latest_cmc_data[str(cmc_id)]['mcap']
-            percent_change_1h = latest_cmc_data[str(cmc_id)]['percent_change_1h']
-            cmc_rank = latest_cmc_data[str(cmc_id)]['cmc_rank']
+            price = latest_cmc_data[cmc_id]['price']
+            mcap = latest_cmc_data[cmc_id]['mcap']
+            percent_change_1h = latest_cmc_data[cmc_id]['percent_change_1h']
+            cmc_rank = latest_cmc_data[cmc_id]['cmc_rank']
             telegram_members, telegram_members_online = telegram_scraper(telegram_url)
             
             # push to database
@@ -28,12 +28,11 @@ def update_symbols_data():
                          VALUES(?, ?, ?, ?, ?, ?, ?, ?)", (id, datetime.datetime.now().strftime("%D %H:%M"),
                          telegram_members, telegram_members_online, mcap, price, cmc_rank, percent_change_1h))
             time.sleep(random.randrange(0,2))
-            
+            conn.commit()
+        
         cur.close()
-        conn.commit()
     except Exception as e:
         print(e)
-
 
 if __name__ == '__main__':
     update_symbols_data()
