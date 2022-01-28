@@ -4,10 +4,10 @@ import json
 import re
 
 
-def do_request(url, parameters):
+def do_request(url, parameters, api_key):
     headers = {
     'Accepts': 'application/json',
-    'X-CMC_PRO_API_KEY': '954e7f63-2d96-4c08-bc3b-f4fbe53ad70f',
+    'X-CMC_PRO_API_KEY': f'{api_key}',
     }
 
     session = Session()
